@@ -1,6 +1,4 @@
-#ifndef GAME_H
-#define GAME_H
-
+#pragma once
 #include "Snake.h"
 #include <SFML/Graphics.hpp>
 #include "Grid.h"
@@ -28,5 +26,3 @@ class Game {
         void update();
         void draw();
 };
-
-#endif

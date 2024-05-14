@@ -1,6 +1,4 @@
-#ifndef GRID_H
-#define GRID_H
-
+#pragma once
 #include <SFML/Graphics.hpp>
 
 class Grid : public sf::Drawable {
@@ -11,5 +9,3 @@ class Grid : public sf::Drawable {
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 };
-
-#endif

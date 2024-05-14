@@ -1,6 +1,4 @@
-#ifndef SNAKE_H
-#define SNAKE_H
-
+#pragma once
 #include "Segment.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -17,5 +15,3 @@ class Snake : public sf::Drawable {
         sf::Vector2i find_new_fruit_coordinates();
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
-
-#endif

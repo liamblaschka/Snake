@@ -5,10 +5,9 @@
 #include <time.h>
 
 using namespace sf;
-using namespace std;
 
 Snake::Snake() {
-    srand(time(0));
+    std::srand(std::time(0));
     segments.push_back(Segment(Vector2i(4, 8), Vector2i(1, 0)));
 }
 
@@ -56,7 +55,7 @@ FloatRect Snake::get_head_bounds() {
 Vector2i Snake::find_new_fruit_coordinates() {
     while(true) {
         bool valid = true;
-        Vector2i coordinates(rand() % 17, rand() % 17);
+        Vector2i coordinates(std::rand() % 17, std::rand() % 17);
         for (auto itr = segments.begin(); itr != segments.end(); itr++) {
             Vector2i segment_coordinates = itr->get_coordinates();
             if (coordinates.x == segment_coordinates.x && coordinates.y == segment_coordinates.y) {

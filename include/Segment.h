@@ -1,6 +1,4 @@
-#ifndef SEGMENT_H
-#define SEGMENT_H
-
+#pragma once
 #include <SFML/Graphics.hpp>
 
 class Segment : public sf::Drawable {
@@ -19,5 +17,3 @@ class Segment : public sf::Drawable {
         sf::Vector2i get_coordinates();
         void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
-
-#endif

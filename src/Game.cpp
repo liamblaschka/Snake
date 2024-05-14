@@ -6,7 +6,6 @@
 #include <string>
 
 using namespace sf;
-using namespace std;
 
 Game::Game(Font &font) : window(VideoMode(595, 645), "Snake", Style::Titlebar | Style::Close), fruit(Vector2f(15, 15)), top_border(Vector2f(595, 3)) {
     window.setVerticalSyncEnabled(true);
@@ -21,9 +20,10 @@ Game::Game(Font &font) : window(VideoMode(595, 645), "Snake", Style::Titlebar | 
     top_border.setOrigin(0, 3);
     top_border.setPosition(0, 50);
 
-    ifstream file("highscore.txt");
+
+    std::ifstream file("highscore.txt");
     if (file.is_open()) {
-        string line;
+        std::string line;
         if (getline(file, line)) {
             highscore = stoi(line);
             highscore_text.setString("HIGH SCORE: " + line);
@@ -41,83 +41,92 @@ void Game::run() {
     moved = true;
     direction = "right";
     score = 0;
-    while (window.isOpen()) {
 
-        update();
+    const int MAX_FRAMESKIP = 5;
+    const Time TIME_PER_FRAME = milliseconds(125);
+    Time time_since_last_update = Time::Zero;
+    while (window.isOpen()) {
+        time_since_last_update += clock.restart();
+
+        int loop_count = 0;
+        while (time_since_last_update > TIME_PER_FRAME && loop_count < MAX_FRAMESKIP) {
+            time_since_last_update -= TIME_PER_FRAME;
+            update();
+
+            loop_count++;
+        }
+
+        Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                window.close();
+            } else if (event.type == Event::KeyPressed && moved) {
+                if (event.key.code == Keyboard::Key::Left) {
+                    if (direction != "left" && direction != "right") {
+                        snake.set_direction(-1, 0);
+                        direction = "left";
+                        moved = false;
+                    }
+                } else if (event.key.code == Keyboard::Key::Right) {
+                    if (direction != "left" && direction != "right") {
+                        snake.set_direction(1, 0);
+                        direction = "right";
+                        moved = false;
+                    }
+                } else if (event.key.code == Keyboard::Key::Up) {
+                    if (direction != "up" && direction != "down") {
+                        snake.set_direction(0, -1);
+                        direction = "up";
+                        moved = false;
+                    }
+                } else if (event.key.code == Keyboard::Key::Down) {
+                    if (direction != "up" && direction != "down") {
+                        snake.set_direction(0, 1);
+                        direction = "down";
+                        moved = false;
+                    }
+                }
+            }
+        }
+
         draw();
     }
 }
 
 void Game::update() {
-    if (clock.getElapsedTime().asMilliseconds() >= 125) {
-        if (!snake.move()) {
-            remove("highscore.txt");
-            ofstream file("highscore.txt");
-            file << highscore;
-            file.close();
+    if (!snake.move()) {
+        remove("highscore.txt");
+        std::ofstream file("highscore.txt");
+        file << highscore;
+        file.close();
 
-            cout << "SCORE: " << score << endl;
-            window.close();
-        }
-        if (snake.get_head_bounds().intersects(fruit.getGlobalBounds())) {
-            snake.add_segment();
-            Vector2i coordinates = snake.find_new_fruit_coordinates();
-            fruit.setPosition(coordinates.x * 35 + 17.5, coordinates.y * 35 + 67.5);
-            score++;
-            scoreboard.setString("SCORE: " + to_string(score));
-
-            if (score >= highscore) {
-                highscore = score;
-                highscore_text.setString("High Score: " + to_string(highscore));
-            }
-        }
-        moved = true;
-        clock.restart();
+        std::cout << "SCORE: " << score << std::endl;
+        std::cout << "HIGH SCORE: " << highscore << std::endl;
+        window.close();
     }
+    if (snake.get_head_bounds().intersects(fruit.getGlobalBounds())) {
+        snake.add_segment();
+        Vector2i coordinates = snake.find_new_fruit_coordinates();
+        fruit.setPosition(coordinates.x * 35 + 17.5, coordinates.y * 35 + 67.5);
+        score++;
+        scoreboard.setString("SCORE: " + std::to_string(score));
 
-    Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == Event::Closed) {
-            window.close();
-        } else if (event.type == Event::KeyPressed && moved) {
-            if (event.key.code == Keyboard::Key::Left) {
-                if (direction != "left" && direction != "right") {
-                    snake.set_direction(-1, 0);
-                    direction = "left";
-                    moved = false;
-                }
-            } else if (event.key.code == Keyboard::Key::Right) {
-                if (direction != "left" && direction != "right") {
-                    snake.set_direction(1, 0);
-                    direction = "right";
-                    moved = false;
-                }
-            } else if (event.key.code == Keyboard::Key::Up) {
-                if (direction != "up" && direction != "down") {
-                    snake.set_direction(0, -1);
-                    direction = "up";
-                    moved = false;
-                }
-            } else if (event.key.code == Keyboard::Key::Down) {
-                if (direction != "up" && direction != "down") {
-                    snake.set_direction(0, 1);
-                    direction = "down";
-                    moved = false;
-                }
-            }
+        if (score >= highscore) {
+            highscore = score;
+            highscore_text.setString("High Score: " + std::to_string(highscore));
         }
     }
+    moved = true;
 }
 
 void Game::draw() {
     window.clear();
-
-    // window.draw(grid);
 
     window.draw(fruit);
     window.draw(snake);
     window.draw(scoreboard);
     window.draw(highscore_text);
     window.draw(top_border);
+
     window.display();
 }
