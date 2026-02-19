@@ -1,13 +1,18 @@
 # Snake
 
 ## Description
-A snake game coded in C++ using SFML.
-The player uses the arrow keys to move the green snake with the goal of collecting as much fruit as possible. With each fruit eaten, the snake grows by one square, and 1 point is added to the score. The game is over if the snake hits the edge of the window/border or runs into its own body. The high score is saved between runs of the game.
+Snake with BFS and DFS search algorithms in C++ using SFML.
+The game can be played by BFS or DFS search algorithms, or can be played by the user.
+The BFS and DFS search algorithms play the game by searching for and traversing a path to the fruit; BFS is able to find the shortest path to the fruit, while DFS does not.
+The user can play the game using the arrow keys.
 
 ## Instructions
-- Make a build directory and within it run 'cmake ..' , then when it is finished, run 'make'.
+- Make a build directory and within it run `cmake ..` , then when it is finished, run `make`.
 - Navigate to the bin directory within build.
-- Run the 'snake' executable.
+### To play as user
+- Run `snake` executable.
+### To play with search algorithm
+- Run `snake <algorithm>` in terminal; `snake BFS` or `snake DFS`.
 
 ## Preview
 <div align="center">

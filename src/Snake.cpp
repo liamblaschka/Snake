@@ -1,14 +1,19 @@
+#include "State.h"
 #include "Snake.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <cstdlib>
 #include <time.h>
+#include <list>
 
+#include <iostream>
+
+using namespace std;
 using namespace sf;
 
 Snake::Snake() {
-    std::srand(std::time(0));
-    segments.push_back(Segment(Vector2i(4, 8), Vector2i(1, 0)));
+    srand(time(0));
+    reset();
 }
 
 bool Snake::move() {
@@ -17,10 +22,11 @@ bool Snake::move() {
     Vector2i direction = segments[0].get_direction();
     destination.x += direction.x;
     destination.y += direction.y;
+
     if (destination.x < 0 || destination.x > 16 || destination.y < 0 || destination.y > 16) {
         return false; // can't move
     }
-    for (auto itr = segments.begin(); itr != segments.end(); itr++) {
+    for (auto itr = segments.begin(); itr != segments.end() - 1; ++itr) {
         Vector2i segment_coordinates = itr->get_coordinates();
         if (destination.x == segment_coordinates.x && destination.y == segment_coordinates.y) {
             return false; // can't move
@@ -28,7 +34,7 @@ bool Snake::move() {
     }
 
     // move can be made
-    for (auto itr = segments.end() - 1; itr != segments.begin(); itr--) {
+    for (auto itr = segments.end() - 1; itr != segments.begin(); --itr) {
         itr->move();
         itr->set_direction((itr - 1)->get_direction());
     }
@@ -55,8 +61,8 @@ FloatRect Snake::get_head_bounds() {
 Vector2i Snake::find_new_fruit_coordinates() {
     while(true) {
         bool valid = true;
-        Vector2i coordinates(std::rand() % 17, std::rand() % 17);
-        for (auto itr = segments.begin(); itr != segments.end(); itr++) {
+        Vector2i coordinates(rand() % 17, rand() % 17);
+        for (auto itr = segments.begin(); itr != segments.end(); ++itr) {
             Vector2i segment_coordinates = itr->get_coordinates();
             if (coordinates.x == segment_coordinates.x && coordinates.y == segment_coordinates.y) {
                 valid = false;
@@ -67,6 +73,27 @@ Vector2i Snake::find_new_fruit_coordinates() {
             return coordinates;
         }
     }
+}
+
+State Snake::getState() {
+    State state(segments[0].get_coordinates().y, segments[0].get_coordinates().x);
+
+    return state;
+}
+
+list<State> Snake::getSegmentStates() {
+    list<State> states;
+    for (int i = 0; i < segments.size(); i++) {
+        State state(segments[i].get_coordinates().y, segments[i].get_coordinates().x);
+        states.push_back(state);
+    }
+
+    return states;
+}
+
+void Snake::reset() {
+    segments.clear();
+    segments.push_back(Segment(Vector2i(4, 8), Vector2i(1, 0), 0.4));
 }
 
 void Snake::draw(RenderTarget& target, RenderStates states) const {

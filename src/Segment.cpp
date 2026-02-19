@@ -3,7 +3,7 @@
 
 using namespace sf;
 
-Segment::Segment(Vector2i coordinates, Vector2i direction) : segment(Vector2f(30, 30)) {
+Segment::Segment(Vector2i coordinates, Vector2i direction, double opacity) : segment(Vector2f(30, 30)) {
     this->coordinates = coordinates;
     this->direction = direction;
     position.x = coordinates.x * 35 + 17.5;
@@ -11,7 +11,8 @@ Segment::Segment(Vector2i coordinates, Vector2i direction) : segment(Vector2f(30
 
     segment.setOrigin(15, 15);
     segment.setPosition(position);
-    segment.setFillColor(Color::Green);
+    // segment.setFillColor(Color(254, 138, 24, 255 * opacity));
+    segment.setFillColor(Color(0, 255, 0, 255 * opacity));
 }
 
 void Segment::move() {
@@ -43,7 +44,10 @@ Vector2i Segment::get_coordinates() {
     return coordinates;
 }
 
+void Segment::set_colour(sf::Color colour) {
+    segment.setFillColor(colour);
+}
+
 void Segment::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(segment);
 }
-
