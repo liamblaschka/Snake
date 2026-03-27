@@ -18,8 +18,4 @@ The user can play the game using the arrow keys.
 Video preview of Snake being played with BFS: https://www.youtube.com/watch?v=eUCAugH0eGM
 <div align="center">
   <img src="https://github.com/liamblaschka/image-repo/blob/main/Snake/gameplay.png" width="355" height="400">
-  <p>
-    The snake in green has the goal of eating the white square fruit.<br>
-    The score and high score are displayed at the top of the game, and in the terminal when the game is over.
-  </p>
 </div>
