@@ -3,7 +3,7 @@
 ## Description
 Snake with BFS and DFS search algorithms in C++ using SFML.
 The game can be played by BFS or DFS search algorithms, or can be played by the user.
-The BFS and DFS search algorithms play the game by searching for and traversing a path to the fruit; BFS is able to find the shortest path to the fruit, while DFS does not.
+The BFS and DFS search algorithms play the game by searching for and traversing a path to the fruit.
 The user can play the game using the arrow keys.
 
 ## Instructions
