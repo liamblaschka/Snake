@@ -144,8 +144,6 @@ void Game::update() {
         cout << "HIGH SCORE: " << highscore << endl << endl;
 
         alive = false;
-
-        // window.close();
     }
     if (snake.getState().row == fruit.getState().row && snake.getState().col == fruit.getState().col) {
         snake.add_segment();

@@ -11,7 +11,6 @@ Segment::Segment(Vector2i coordinates, Vector2i direction, double opacity) : seg
 
     segment.setOrigin(15, 15);
     segment.setPosition(position);
-    // segment.setFillColor(Color(254, 138, 24, 255 * opacity));
     segment.setFillColor(Color(0, 255, 0, 255 * opacity));
 }
 
