@@ -1,12 +1,6 @@
-*.bin
-*.pth
-*.csv
-
 *.DS_Store
 
-*.venv/
-
-*__pycache__/
+highscore.txt
 
 # Prerequisites
 *.d
